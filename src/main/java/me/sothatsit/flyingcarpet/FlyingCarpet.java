@@ -19,6 +19,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -171,6 +172,32 @@ public class FlyingCarpet extends JavaPlugin implements Listener {
 
             e.setCancelled(true);
             return;
+        }
+    }
+
+    @EventHandler
+    public void onBlockExplode(BlockExplodeEvent e) {
+        List<Block> remove = new ArrayList<>();
+
+        for (Block b : e.blockList()) {
+            for (final UPlayer up : players) {
+                if (!up.isCarpetBlock(b)) {
+                    if (up.isEnabled()) {
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                up.createCarpet();
+                            }
+                        }.runTask(this);
+                    }
+                    continue;
+                }
+                remove.add(b);
+            }
+        }
+
+        for (Block block : remove) {
+            e.blockList().remove(block);
         }
     }
 
