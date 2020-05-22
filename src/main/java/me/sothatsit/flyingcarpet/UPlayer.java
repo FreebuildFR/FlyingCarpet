@@ -7,11 +7,11 @@ import me.sothatsit.flyingcarpet.model.Model;
 import me.sothatsit.flyingcarpet.model.Region;
 import me.sothatsit.flyingcarpet.util.Checks;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -106,7 +106,6 @@ public class UPlayer {
         }
 
         this.tools = tools;
-
         this.createCarpet();
     }
 
@@ -121,7 +120,6 @@ public class UPlayer {
         }
 
         this.light = light;
-
         this.createCarpet();
     }
 

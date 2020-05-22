@@ -10,7 +10,6 @@ import me.sothatsit.flyingcarpet.message.Messages;
 
 import me.sothatsit.flyingcarpet.model.BlockOffset;
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -29,7 +28,6 @@ import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class FlyingCarpet extends JavaPlugin implements Listener {
@@ -38,7 +36,7 @@ public class FlyingCarpet extends JavaPlugin implements Listener {
 
     private FCConfig mainConfig;
     static List<PluginHooks> pluginHooks;
-    private List<UPlayer> players = new ArrayList<>();
+    private final List<UPlayer> players = new ArrayList<>();
 
     @Override
     public void onEnable() {
@@ -64,6 +62,7 @@ public class FlyingCarpet extends JavaPlugin implements Listener {
         for (UPlayer up : players) {
             up.setEnabled(false);
         }
+        players.clear();
     }
 
     public boolean isCarpetAllowed(Location loc) {
@@ -99,14 +98,6 @@ public class FlyingCarpet extends JavaPlugin implements Listener {
         return up;
     }
 
-    public UPlayer getUPlayer(UUID uuid) {
-        for (UPlayer up : players) {
-            if (up.getPlayer().getUniqueId().equals(uuid))
-                return up;
-        }
-        return null;
-    }
-
     public void removeUPlayer(Player p) {
         UPlayer up = getUPlayer(p);
 
@@ -114,7 +105,6 @@ public class FlyingCarpet extends JavaPlugin implements Listener {
             return;
 
         players.remove(up);
-
         up.setEnabled(false);
     }
 
@@ -130,28 +120,18 @@ public class FlyingCarpet extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
-        for (UPlayer up : players) {
-            Player p = up.getPlayer();
-
+        for (final UPlayer up : players) {
             if (!up.isCarpetBlock(e.getBlock())) {
                 if (up.isEnabled()) {
-                    final UUID uuid = p.getUniqueId();
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            UPlayer up = getUPlayer(uuid);
-
-                            if (up == null)
-                                return;
-
                             up.createCarpet();
                         }
                     }.runTask(this);
                 }
-
                 continue;
             }
-
             e.setCancelled(true);
             return;
         }
@@ -199,28 +179,18 @@ public class FlyingCarpet extends JavaPlugin implements Listener {
         List<Block> remove = new ArrayList<>();
 
         for (Block b : e.blockList()) {
-            for (UPlayer up : players) {
-                Player p = up.getPlayer();
-
+            for (final UPlayer up : players) {
                 if (!up.isCarpetBlock(b)) {
                     if (up.isEnabled()) {
-                        final UUID uuid = p.getUniqueId();
                         new BukkitRunnable() {
                             @Override
                             public void run() {
-                                UPlayer up = getUPlayer(uuid);
-
-                                if (up == null)
-                                    return;
-
                                 up.createCarpet();
                             }
                         }.runTask(this);
                     }
-
                     continue;
                 }
-
                 remove.add(b);
             }
         }
@@ -343,13 +313,5 @@ public class FlyingCarpet extends JavaPlugin implements Listener {
 
     public static void severe(String severe) {
         instance.getLogger().severe(severe);
-    }
-
-    public static void sync(Runnable task) {
-        Bukkit.getScheduler().runTask(instance, task);
-    }
-
-    public static void async(Runnable task) {
-        Bukkit.getScheduler().runTaskAsynchronously(instance, task);
     }
 }
