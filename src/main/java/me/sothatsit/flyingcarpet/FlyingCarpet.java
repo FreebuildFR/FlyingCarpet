@@ -13,6 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,6 +26,7 @@ import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.plugin.Plugin;
@@ -178,7 +180,6 @@ public class FlyingCarpet extends JavaPlugin implements Listener {
     @EventHandler
     public void onBlockExplode(BlockExplodeEvent e) {
         List<Block> remove = new ArrayList<>();
-
         for (Block b : e.blockList()) {
             for (final UPlayer up : players) {
                 if (!up.isCarpetBlock(b)) {
@@ -204,7 +205,6 @@ public class FlyingCarpet extends JavaPlugin implements Listener {
     @EventHandler
     public void onEntityExplode(EntityExplodeEvent e) {
         List<Block> remove = new ArrayList<>();
-
         for (Block b : e.blockList()) {
             for (final UPlayer up : players) {
                 if (!up.isCarpetBlock(b)) {
@@ -320,6 +320,19 @@ public class FlyingCarpet extends JavaPlugin implements Listener {
 
         up.setLocation(e.getPlayer().getLocation().subtract(0, 2, 0));
         up.startDescent();
+    }
+
+    @EventHandler
+    public void onFallBlockPlace(EntitySpawnEvent e) {
+        if (e.getEntityType().equals(EntityType.FALLING_BLOCK)) {
+            for (UPlayer up : players) {
+                if (!up.isCarpetBlock(e.getLocation()))
+                    continue;
+
+                e.getEntity().remove();
+                return;
+            }
+        }
     }
 
     public static FlyingCarpet getInstance() {

@@ -11,7 +11,6 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -56,6 +55,11 @@ public class UPlayer {
     }
 
     public void setMaterial(String material) {
+        if (!enabled || (this.material == null || this.material.equals(material))) {
+            this.material = material;
+            return;
+        }
+
         this.material = material;
         createCarpet();
     }
@@ -75,7 +79,6 @@ public class UPlayer {
         }
 
         this.loc = loc;
-
         createCarpet();
     }
 
