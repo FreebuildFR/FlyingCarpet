@@ -7,7 +7,6 @@ import me.sothatsit.flyingcarpet.model.Model;
 import me.sothatsit.flyingcarpet.model.Region;
 import me.sothatsit.flyingcarpet.util.Checks;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -56,6 +55,11 @@ public class UPlayer {
     }
 
     public void setMaterial(String material) {
+        if (!enabled || (this.material == null || this.material.equals(material))) {
+            this.material = material;
+            return;
+        }
+
         this.material = material;
         createCarpet();
     }
@@ -75,7 +79,6 @@ public class UPlayer {
         }
 
         this.loc = loc;
-
         createCarpet();
     }
 
@@ -106,7 +109,6 @@ public class UPlayer {
         }
 
         this.tools = tools;
-
         this.createCarpet();
     }
 
@@ -121,7 +123,6 @@ public class UPlayer {
         }
 
         this.light = light;
-
         this.createCarpet();
     }
 

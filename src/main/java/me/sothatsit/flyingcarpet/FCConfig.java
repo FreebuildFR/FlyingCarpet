@@ -20,7 +20,7 @@ public class FCConfig {
     private Set<BlockData> passThrough;
     private int descendSpeed;
 
-    private Set<String> worldguardRegionBlacklist = new HashSet<>();
+    private final Set<String> worldguardRegionBlacklist = new HashSet<>();
 
     private static void copySection(ConfigurationSection defaults,
                                     ConfigurationSection config,
