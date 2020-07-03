@@ -13,7 +13,7 @@ public class RedProtectHook implements PluginHooks {
 
     @Override
     public boolean isCarpetAllowed(Location loc) {
-        Region r = RedProtect.get().rm.getTopRegion(loc);
+        Region r = RedProtect.get().getAPI().getRegion(loc);
         if (r == null) return true;
 
         return r.getFlagBool("allow-magiccarpet");
@@ -21,7 +21,7 @@ public class RedProtectHook implements PluginHooks {
 
     @Override
     public boolean canBuild(Player player) {
-        Region r = RedProtect.get().rm.getTopRegion(player.getLocation());
+        Region r = RedProtect.get().getAPI().getRegion(player.getLocation());
         if (r == null) return true;
 
         return r.canBuild(player);
