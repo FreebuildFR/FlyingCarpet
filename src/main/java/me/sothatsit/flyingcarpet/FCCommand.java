@@ -172,6 +172,38 @@ public class FCCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if (args[0].equalsIgnoreCase("color")) {
+            String[] validColors = {"none", "white", "orange", "magenta", "light_blue", "yellow", "lime", "pink", "gray", "light_gray", "cyan", "purple", "blue", "brown", "green", "red", "black"};
+            String[] colorCodes = {"&f", "&f", "&6", "&5", "&b", "&e", "&a", "&d", "&8", "&7", "&3", "&5", "&9", "&4", "&2", "&c", "&0"};
+            String possible_color_str = "<" + String.join("|", validColors) + ">";
+
+            if (args.length != 2) {
+                Messages.get("error.invalid-arguments").argument("%valid%", "/mc color " + possible_color_str).send(sender);
+                return true;
+            }
+
+            String color = args[1].toLowerCase();
+
+            int colorIdx = -1;
+            for (int i = 0 ; i < validColors.length; i++ ) {
+                if (validColors[i].equals(color)) {
+                    colorIdx = i;
+                    break;
+                }
+            }
+
+            if (colorIdx < 0) {
+                Messages.get("error.invalid-arguments").argument("%valid%", "/mc color " + possible_color_str).send(sender);
+                return true;
+            }
+
+            up.setColor(color);
+
+            String color_str = colorCodes[colorIdx] + "&l" + color;
+            Messages.get("message.color").argument("%color%", color_str).send(sender);
+            return true;
+        }
+
         if (args[0].equalsIgnoreCase("size")) {
             try {
                 int size = Integer.parseInt(args[1]);
@@ -331,7 +363,11 @@ public class FCCommand implements CommandExecutor, TabCompleter {
             if (commandSender.hasPermission("flyingcarpet.reload"))
                 tab.add("reload");
             tab.add("size");
+            tab.add("color");
             tab.addAll(Arrays.stream(Material.values()).filter(m->commandSender.hasPermission("flyingcarpet.material."+m.name().toLowerCase())).map(m->m.name().toLowerCase()).collect(Collectors.toList()));
+        } else if (strings.length == 2 && strings[0].equalsIgnoreCase("color")) {
+            // Add color options for tab completion
+            tab.addAll(Arrays.asList("none", "white", "orange", "magenta", "light_blue", "yellow", "lime", "pink", "gray", "light_gray", "cyan", "purple", "blue", "brown", "green", "red", "black"));
         }
 
         return tab;
