@@ -1,4 +1,5 @@
 message:
+   color: '&7 The color of your flying carpet has been set to %color%'
    reload: '&7The flying carpet config has been reloaded'
    carpet-on: '&7Your flying carpet has been toggled &a&lOn'
    carpet-off: '&7Your flying carpet has been toggled &c&lOff'

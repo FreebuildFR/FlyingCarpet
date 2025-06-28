@@ -23,6 +23,7 @@ public class UPlayer {
     private final Map<BlockOffset, BlockState> blocks;
 
     private String material;
+    private String color;
     private int size = 0;
     private boolean touch = false;
 
@@ -57,7 +58,14 @@ public class UPlayer {
 
     public void setMaterial(String material) {
         this.material = material;
-        createCarpet();
+        if (enabled)
+            createCarpet();
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+        if (enabled)
+            createCarpet();
     }
 
     public Player getPlayer() {
@@ -181,8 +189,16 @@ public class UPlayer {
 
         String mat = FlyingCarpet.getMainConfig().getBaseModel().getBlockData(BlockOffset.from(loc,loc)).getType().name().toLowerCase();
 
-        if (material != null)
+        if (material != null) {
             mat = material;
+
+            if (mat.equals("glass") && color != null)
+                if (!color.equals("none"))
+                    mat = color + "_stained_glass";
+        } else if (color != null) {
+            if (!color.equals("none"))
+                mat = color + "_stained_glass";
+        }
 
         if (player.getActivePotionEffects().stream().anyMatch(pot->pot.getType().equals(PotionEffectType.INVISIBILITY)))
             mat = "barrier";
