@@ -1,7 +1,7 @@
 main: me.sothatsit.flyingcarpet.FlyingCarpet
 author: sothatsit
 name: FlyingCarpet
-version: 1.4.3
+version: 1.4.4
 api-version: 1.13
 softdepend: [WorldGuard, WorldEdit, RedProtect]
 commands:
@@ -30,3 +30,6 @@ permissions:
    flyingcarpet.worldguard:
       description: 'Allow admins to add blacklisted worldguard regions'
       default: false
+   flyingcarpet.color:
+      description: 'Permission to change the color of your flying carpet'
+      default: op

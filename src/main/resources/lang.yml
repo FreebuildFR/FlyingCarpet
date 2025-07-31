@@ -31,6 +31,7 @@ error:
       material: '&4Error > &cYou do not have permission to change to this carpet material'
       size: '&4Error > &cYou do not have permission to change to this carpet size'
       touch: '&4Error > &cYou do not have permission to change the touch state of carpet'
+      color: '&4Error > &cYou do not have permission to change the color of your flying carpet'
    invalid-arguments: '&4Invalid Arguments > &c%valid%'
    worldguard-not-hooked: '&4Error > &cWorldGuard is not currently hooked'
    region-blocked: '&4Error > &cYou can not use your carpet in this area'

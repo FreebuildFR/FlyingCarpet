@@ -155,7 +155,7 @@ public class FCCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if (Stream.of(Material.values()).anyMatch(m->m.name().equalsIgnoreCase(args[0]))) {
+        if (Stream.of(Material.values()).anyMatch(m->m.name().equalsIgnoreCase(args[0])) && !args[0].equalsIgnoreCase("light")) {
             String mat = args[0];
             if (!mat.equalsIgnoreCase("glass") && !p.hasPermission("flyingcarpet.material." + mat)) {
                 Messages.get("error.no-permissions.material").send(sender);
@@ -173,6 +173,11 @@ public class FCCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args[0].equalsIgnoreCase("color")) {
+            if (!p.hasPermission("flyingcarpet.color")) {
+                Messages.get("error.no-permissions.color").send(sender);
+                return false;
+            }
+
             String[] validColors = {"none", "white", "orange", "magenta", "light_blue", "yellow", "lime", "pink", "gray", "light_gray", "cyan", "purple", "blue", "brown", "green", "red", "black"};
             String[] colorCodes = {"&f", "&f", "&6", "&5", "&b", "&e", "&a", "&d", "&8", "&7", "&3", "&5", "&9", "&4", "&2", "&c", "&0"};
             String possible_color_str = "<" + String.join("|", validColors) + ">";

@@ -46,7 +46,6 @@ public class Model {
             if (!config.isConfigurationSection(key))
                 continue;
 
-
             ConfigurationSection section = config.getConfigurationSection(key);
             ModelElement element = loadModelElement(section, requiresSave);
 

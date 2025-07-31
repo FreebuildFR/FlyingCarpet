@@ -1,9 +1,13 @@
 pass-through:
 - water
 - lava
-- grass
+- short_grass
+- short_dry_grass
+- bush
+- firefly_bush
 - fern
 - tall_grass
+- tall_dry_grass
 - large_fern
 - dead_bush
 - vine
